@@ -85,6 +85,10 @@ subprojects {
         publications {
             register<MavenPublication>("gpr") {
                 from(components["java"])
+//                groupId = "com.abhinav.mylib"
+//                artifactId = "mylib"
+//                version = "1.0.0"
+//                artifact("$buildDir/outputs/aar/mylib-release.aar")
             }
         }
     }
