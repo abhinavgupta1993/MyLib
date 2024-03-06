@@ -45,26 +45,47 @@ dependencies {
 
 }
 
-publishing {
-    publications {
-        create<MavenPublication>("release") {
-//            from components.java
-            groupId = "com.abhinav.mylib"
-            artifactId = "mylib"
-            version = "1.0.0"
-            artifact("$buildDir/outputs/aar/mylib-release.aar")
-        }
-    }
-    repositories {
-        maven {
-        name = "GithubPackages"
-        url = uri("https://maven.pkg.github.com/")
+//publishing {
+//    publications {
+//        create<MavenPublication>("release") {
+//            from(components["java"])
+//            groupId = "com.abhinav.mylib"
+//            artifactId = "mylib"
+//            version = "1.0.0"
+//            artifact("$buildDir/outputs/aar/mylib-release.aar")
+//        }
+//    }
+//    repositories {
 //        maven {
-//            url = uri("https://your-repo-url")
+//        name = "GithubPackages"
+//        url = uri("https://maven.pkg.github.com/abhinavgupta1993/MyLib")
+////        maven {
+////            url = uri("https://your-repo-url")
 //            credentials {
-//                username = "your-username"
-//                password = "your-password"
+//                username = "abhinavgupta1993"
+//                password = "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"
 //            }
+//        }
+//    }
+//}
+
+subprojects {
+    apply(plugin = "maven-publish")
+    configure<PublishingExtension> {
+        repositories {
+            maven {
+                name = "GitHubPackages"
+                url = uri("https://maven.pkg.github.com/abhinavgupta1993/MyLib")
+                credentials {
+                    username = project.findProperty("gpr.user") as String? ?: System.getenv("USERNAME")
+                    password = project.findProperty("gpr.key") as String? ?: System.getenv("TOKEN")
+                }
+            }
+        }
+        publications {
+            register<MavenPublication>("gpr") {
+                from(components["java"])
+            }
         }
     }
 }
