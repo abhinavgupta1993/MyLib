@@ -1,4 +1,3 @@
-import org.gradle.api.publish.PublishingExtension
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
@@ -7,7 +6,7 @@ plugins {
 
 android {
     namespace = "com.abhinav.mylib"
-    compileSdk = 34
+    compileSdk = 33
 
     defaultConfig {
         minSdk = 24
@@ -34,10 +33,6 @@ android {
     }
 }
 
-publishing{
-
-}
-
 dependencies {
 
     implementation("androidx.core:core-ktx:1.8.0")
@@ -50,6 +45,26 @@ dependencies {
 
 }
 
-//afterEvaluate {
-
-//}
+publishing {
+    publications {
+        create<MavenPublication>("release") {
+//            from components.java
+            groupId = "com.abhinav.mylib"
+            artifactId = "mylib"
+            version = "1.0.0"
+            artifact("$buildDir/outputs/aar/mylib-release.aar")
+        }
+    }
+    repositories {
+        maven {
+        name = "GithubPackages"
+        url = uri("https://maven.pkg.github.com/")
+//        maven {
+//            url = uri("https://your-repo-url")
+//            credentials {
+//                username = "your-username"
+//                password = "your-password"
+//            }
+        }
+    }
+}
